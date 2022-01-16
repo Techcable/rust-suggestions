@@ -1,9 +1,10 @@
 [package]
 name = "suggestions"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "Minimal library to provide clap-style \"Did you mean?\" suggestions."
 readme = "README.md"
+repository = "https://github.com/Techcable/rust-suggestions"
 license = "MIT"
 
 [dependencies]
