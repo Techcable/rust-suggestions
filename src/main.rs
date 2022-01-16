@@ -2,14 +2,14 @@
 //!
 //! Has zero additional dependencies.
 
-use std::{env, process, io};
+use std::{env, io, process};
 
 #[derive(Default, Debug)]
 pub struct Flags {
     single_suggestion: bool,
     quote_output: bool,
     json: bool,
-    require_suggestions: bool
+    require_suggestions: bool,
 }
 
 const HELP: &str = r##"suggestions
@@ -37,24 +37,24 @@ pub fn main() {
         match s.as_str() {
             "-s" | "--single" => {
                 flags.single_suggestion = true;
-            },
+            }
             "-q" | "--quote" => {
                 flags.quote_output = true;
             }
             "-h" | "--help" => {
                 println!("{}", HELP);
                 process::exit(0);
-            },
+            }
             "--json" => {
                 flags.json = true;
             }
             "--required" => {
                 flags.require_suggestions = true;
-            },
+            }
             "--" => {
                 args.next().unwrap();
                 break;
-            },
+            }
             _ => {
                 eprintln!("Unexpected flag {:?}", s);
                 eprintln!("See `--help` for possible options");
@@ -78,7 +78,7 @@ pub fn main() {
             Ok(_) => {
                 possible_values.push(buf.trim_end_matches(&['\r', '\n']).into());
                 buf.clear();
-            },
+            }
             Err(e) => {
                 eprintln!("Unexpected error reading input: {}", e);
                 process::exit(1);
@@ -93,7 +93,7 @@ pub fn main() {
         if !first_target && flags.json {
             println!(",")
         }
-        let mut suggestions = suggestions::provide_suggestions(&target, possible_values.iter());
+        let mut suggestions = suggestions::provide_suggestions(target, possible_values.iter());
         if flags.single_suggestion && suggestions.len() > 1 {
             suggestions.truncate(1);
         }

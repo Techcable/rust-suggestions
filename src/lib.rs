@@ -62,7 +62,10 @@ const CONFIDENCE_THRESHOLD: f64 = 0.8;
 ///
 /// If there are multiple ,possible
 pub fn provide_a_suggestion<I, T>(target: &str, possible_values: I) -> Option<String>
-    where T: AsRef<str>, I: IntoIterator<Item=T> {
+where
+    T: AsRef<str>,
+    I: IntoIterator<Item = T>,
+{
     provide_suggestions(target, possible_values).pop()
 }
 
@@ -75,15 +78,23 @@ pub fn provide_a_suggestion<I, T>(target: &str, possible_values: I) -> Option<St
 /// worst).
 ///
 /// See also [provide_a_suggestion], which only picks a single suggesetion.
-pub fn provide_suggestions<I, T>(target: &str, possible_values: I) -> Vec<String> 
-    where T: AsRef<str>, I: IntoIterator<Item=T> {
+pub fn provide_suggestions<I, T>(target: &str, possible_values: I) -> Vec<String>
+where
+    T: AsRef<str>,
+    I: IntoIterator<Item = T>,
+{
     // Implementation copied directly from clap
     // See here: https://github.com/clap-rs/clap/blob/7b7c76e3d0279b474c774ea738aecb1d77251df8/src/parse/features/suggestions.rs#L17-L23
-    let mut candidates: Vec<(f64, String)> = possible_values.into_iter()
-        .map(|pv| (strsim::jaro_winkler(target, pv.as_ref()), pv.as_ref().into()))
+    let mut candidates: Vec<(f64, String)> = possible_values
+        .into_iter()
+        .map(|pv| {
+            (
+                strsim::jaro_winkler(target, pv.as_ref()),
+                pv.as_ref().into(),
+            )
+        })
         .filter(|(confidence, _)| *confidence > CONFIDENCE_THRESHOLD)
         .collect();
     candidates.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap_or(Ordering::Equal));
     candidates.into_iter().map(|(_, pv)| pv).collect()
 }
-
