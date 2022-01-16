@@ -1,0 +1,16 @@
+[package]
+name = "suggestions"
+version = "0.1.0"
+edition = "2021"
+description = "Minimal library to provide clap-style \"Did you mean?\" suggestions."
+readme = "README.md"
+license = "MIT"
+
+[dependencies]
+strsim = "0.10"
+
+[profile.release]
+# NOTE: This only applies to the binary
+lto = "thin"
+strip = true
+panic = "abort"
