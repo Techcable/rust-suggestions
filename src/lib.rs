@@ -39,6 +39,13 @@
 //! let input = "--something-completely_different";
 //! assert_eq!(suggestions::provide_a_suggestion(&input, &possible_vals), None)
 //! ```
+//!
+//! ## Binary
+//! This crate also comes usable as an (optional) zero-dependency binary.
+//!
+//! See documentation at [the readme](https://github.com/Techcable/rust-suggestions#binary).
+//!
+//! At the time of this writing it is 276k ;)
 #![deny(missing_docs)]
 use std::cmp::Ordering;
 use std::convert::AsRef;
