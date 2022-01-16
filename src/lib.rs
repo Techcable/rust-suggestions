@@ -3,7 +3,7 @@
 //! The implementation is copied directly from clap.
 //!
 //! ## Examples
-//! ```
+//! ```rust
 //! let possible_vals = vec!["test", "possible", "values"];
 //! let input = "tst";
 //! let suggestions = suggestions::provide_suggestions(input, &possible_vals);
@@ -13,19 +13,28 @@
 //! assert_eq!(single_suggestion.unwrap(), "test");
 //! ```
 //!
-//! ```
+//! ### Multiple matches
+//! Sometimes, there may be multiple (good) suggestions.
+//!
+//! Consider the following example:
+//!
+//! ```rust
 //! let possible_vals = vec!["testing", "tempo"];
 //! let input = "teso"; // Sems ambiguous. Maybe multiple suggestions?
 //! let suggestions = suggestions::provide_suggestions(input, &possible_vals);
 //! // The implementation trys to order matches from "best" to "wort"
 //! assert_eq!(suggestions, vec!["testing", "tempo"]);
-//! // Asking for a single suggestion here would attempt to return the "best" one
 //! ```
 //!
+//! Asking for a single suggestion here (`provide_a_suggestion`) would attempt to return the "best" one.
+//! As you can immagine, that may not be what the user expects.
+//! Therefore, it is best to stick with `provide_suggesetions`.
+//!
+//! ### No matches
 //! If nothing is reasonably similar, asking for suggestions
 //! will return `vec![]` or `None`.
 //!
-//! ```
+//! ```rust
 //! let possible_vals = vec!["testing", "things", "here"];
 //! let input = "--something-completely_different";
 //! assert_eq!(suggestions::provide_a_suggestion(&input, &possible_vals), None)
@@ -58,7 +67,7 @@ pub fn provide_a_suggestion<I, T>(target: &str, possible_values: I) -> Option<St
 /// The implementation sorts suggestions based on its internal notion of similarity (from best ->
 /// worst).
 ///
-/// See also [provide_suggestion], which only picks a single suggesetion.
+/// See also [provide_a_suggestion], which only picks a single suggesetion.
 pub fn provide_suggestions<I, T>(target: &str, possible_values: I) -> Vec<String> 
     where T: AsRef<str>, I: IntoIterator<Item=T> {
     // Implementation copied directly from clap
