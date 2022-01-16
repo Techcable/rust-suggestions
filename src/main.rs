@@ -121,6 +121,8 @@ pub fn main() {
         }
         if flags.json {
             print!("]");
+        } else {
+            println!();
         }
         first_target = false;
     }

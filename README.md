@@ -41,4 +41,32 @@ A binary is available as an example of how to use the library.
 It has no additional dependencies. Desired targets are provided as arguments, and "possible strings" are read from standard input
 
 ### Examples
+````
+$ echo "baz\nbar\nfood\nfoz" | suggestions fod
+foz food
+````
 
+````
+# Supports multiple targets
+$ echo "baz\nbar\nfood\nfoz" | suggestions fod ba
+foz food
+baz bar
+````
+
+````
+# No matches -> corresponding empty line
+$ echo "baz\nbar\nfood\nfoz" | suggestions fod ba
+foz food
+baz bar
+
+```
+
+```
+# Supports outputing as josn (for whatever that's worth)
+# echo "baz\nbar\nfood\nfoz" | suggestions --json fod ba nothing-similar
+{
+  "fod":["foz","food"],
+  "ba":["baz","bar"],
+  "nothing-similar":[]
+}
+````
